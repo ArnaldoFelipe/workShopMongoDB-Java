@@ -37,10 +37,23 @@ public class UserService {
         repository.deleteById(id);
     }
 
+    public User update(User user){
+        Optional<User> newUser = repository.findById(user.getId());
+        if(newUser.isEmpty()){
+            throw new ObjectNotFoundException("Usuario nao existe");
+        }
+        User userNew = newUser.get();
+        updateData(userNew, user);
+        return repository.save(userNew);
+    }
+
+    public void updateData(User newUser, User user){
+        newUser.setName(user.getName());
+        newUser.setEmail(user.getEmail());
+    }
+
     public User fromDto(UserDto userDto){
         return new User(userDto.getId(),userDto.getName(), userDto.getEmail());
         
     }
-
-    
 }
