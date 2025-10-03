@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.project.workShopMongoDB.domain.Post;
 import com.project.workShopMongoDB.domain.User;
+import com.project.workShopMongoDB.dto.AuthorDto;
 import com.project.workShopMongoDB.repository.PostRepository;
 import com.project.workShopMongoDB.repository.UserRepository;
 
@@ -29,14 +30,18 @@ public class Instantiation implements CommandLineRunner {
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         repository.deleteAll();
+        
         User maria = new User(null, "Maria Brown", "maria@gmail.com"); 
         User alex = new User(null, "Alex Green", "alex@gmail.com"); 
         User bob = new User(null, "Bob Grey", "bob@gmail.com"); 
+
         repository.saveAll(Arrays.asList(maria, alex, bob));
 
         postRepository.deleteAll();
-        Post post1 = new Post(null, sdf.parse("21/03/2018"), "partiu viagem", "vou viajar para sp, abraços", maria);
-        Post post2 = new Post(null, sdf.parse("22/03/2018"), "bom dia", "acordei feliz hoje!", maria);
+
+        Post post1 = new Post(null, sdf.parse("21/03/2018"), "partiu viagem", "vou viajar para sp, abraços", new AuthorDto(maria));
+        Post post2 = new Post(null, sdf.parse("22/03/2018"), "bom dia", "acordei feliz hoje!", new AuthorDto(maria));
+
         postRepository.saveAll(Arrays.asList(post1, post2));
     }
 }
